@@ -13,9 +13,26 @@ public class Tank {
     private TankFrame frame;
     public static int WIDTH=ImageMar.tankD.getWidth();
     public static int HEIGHT=ImageMar.tankD.getHeight();
+    private boolean living=true;
 
 
-    public boolean isMoving() {
+    public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public boolean isMoving() {
         return moving;
     }
 
@@ -39,7 +56,9 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        Color c=g.getColor();
+        if(!living){
+        	frame.tanks.remove(this);
+        }
         switch (dir){
             case UP:
                 g.drawImage(ImageMar.tankU,x,y,null);
@@ -81,4 +100,9 @@ public class Tank {
         int by=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
        frame.bullets.add(new Bullet(bx,by,this.dir,frame ));
     }
+
+	public void die() {
+		// TODO Auto-generated method stub
+		this.living=false;
+	}
 }
