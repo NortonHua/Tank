@@ -1,22 +1,31 @@
 package com.norton.tank;
 
-import com.norton.tank.ResourceMgr;
-
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
 
     private int x,y;
     private Dir dir=Dir.DOWN;
-    private static final int SPEED=5;
-    private boolean moving=false;
+    private static final int SPEED=1;
+    private boolean moving=true;
     private TankFrame frame;
     public static int WIDTH=ImageMar.tankD.getWidth();
     public static int HEIGHT=ImageMar.tankD.getHeight();
     private boolean living=true;
+    private Random random=new Random();
+    private Group group=Group.BAD;
 
 
-    public int getX() {
+    public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public int getX() {
 		return x;
 	}
 
@@ -48,10 +57,11 @@ public class Tank {
         this.dir = dir;
     }
 
-    public Tank(int x, int y, Dir dir,TankFrame frame) {
+    public Tank(int x, int y, Dir dir,Group group,TankFrame frame) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group=group;
         this.frame=frame;
     }
 
@@ -92,13 +102,14 @@ public class Tank {
                     y += SPEED;
                     break;
             }
+            if(random.nextInt(10)>8) this.fire();
 
     }
 
     public void fire() {
         int bx=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
         int by=this.y+Tank.HEIGHT/2-Bullet.HEIGHT/2;
-       frame.bullets.add(new Bullet(bx,by,this.dir,frame ));
+       frame.bullets.add(new Bullet(bx,by,this.dir,this.group,frame ));
     }
 
 	public void die() {
